@@ -41,16 +41,11 @@ jobs:
     - name: Configure Build Options
       run: |
         cd lede
-        # 自动设置 MT7620 和 PSG1218
         echo "CONFIG_TARGET_ramips=y" >> .config
         echo "CONFIG_TARGET_ramips_mt7620=y" >> .config
         echo "CONFIG_TARGET_DEVICE_ramips_mt7620_psg1218=y" >> .config
-        
-        # 添加 ZeroTier 和 MWAN3
         echo "CONFIG_PACKAGE_zerotier=y" >> .config
         echo "CONFIG_PACKAGE_mwan3=y" >> .config
-
-        # 运行 make defconfig 以确保配置被应用
         make defconfig
 
     - name: Build Firmware
@@ -60,7 +55,7 @@ jobs:
         make V=s -j1
 
     - name: Upload Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: firmware
         path: lede/bin/targets/*/*.bin
